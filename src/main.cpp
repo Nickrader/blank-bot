@@ -107,12 +107,12 @@ int main(int argc, char* argv[])
     Bot bot;
     coordinator.SetParticipants(
         {
-            CreateParticipant(sc2::Race::Random, &bot, "BlankBot"),
+            CreateParticipant(sc2::Race::Terran, &bot, "BlankBot"),
             CreateComputer(
                 sc2::Race::Random,
-                sc2::Difficulty::CheatInsane,
+                sc2::Difficulty::Easy,
                 sc2::AIBuild::Rush,
-                "CheatInsane"
+                "EasyRush"
                 )
         });
 
