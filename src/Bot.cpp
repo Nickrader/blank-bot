@@ -45,7 +45,7 @@ void Bot::OnStep() {
   // check mainscreen, do actions {i.e. the fun part}
   // a.k.a. The Circle of Starcraft.
   BuildScv();
-  BuildDepot(ToggleBuildDepot);
+  BuildDepot();
 
   int loop = Observation()->GetGameLoop();
   std::cout << "OnStep: " << loop << std::endl;
@@ -93,7 +93,23 @@ void Bot::OnError(const std::vector<sc2::ClientError>& client_errors,
     std::cerr << "Encountered protocol error: " << i << std::endl;
 }
 
-void Bot::BuildDepot() {}
+void Bot::BuildDepot() {
+  // if supply is less than some number
+  auto food = Observation()->GetFoodUsed();
+  auto supply = Observation()->GetFoodCap();
+  if (food >= supply) {
+    auto workers =
+        Observation()->GetUnits(sc2::Unit::Alliance::Self, sc2::IsWorker());
+    // Observation()->GetUnit(workers[0]->tag); // redundant
+    const sc2::Unit* gopher = workers[0];
+    // this will probably cause too much building
+    Actions()->UnitCommand(gopher, sc2::ABILITY_ID::BUILD_SUPPLYDEPOT);
+
+    for (const sc2::UnitOrder& order : gopher->orders)
+      std::cout << "Order: " << sc2::AbilityTypeToName(order.ability_id)
+                << std::endl;
+  }
+}
 
 void Bot::BuildScv() {
   sc2::Units units =
