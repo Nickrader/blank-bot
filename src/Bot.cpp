@@ -93,17 +93,7 @@ void Bot::OnError(const std::vector<sc2::ClientError>& client_errors,
     std::cerr << "Encountered protocol error: " << i << std::endl;
 }
 
-bool Bot::BuildDepot(bool toggle_) {
-  if (ToggleBuildDepot) {
-    ToggleBuildDepot = !ToggleBuildDepot;
-    std::cout << "Build Depot" << std::endl;
-    return true;
-  } else {
-    ToggleBuildDepot = !ToggleBuildDepot;
-    std::cout << "Don't Build" << std::endl;
-    return false;
-  }
-}
+void Bot::BuildDepot() {}
 
 void Bot::BuildScv() {
   sc2::Units units =

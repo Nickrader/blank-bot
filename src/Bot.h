@@ -7,33 +7,32 @@
 #include <sc2api/sc2_agent.h>
 
 // The main bot class.
-struct Bot: sc2::Agent
-{
-    Bot() = default;
+struct Bot : sc2::Agent {
+  Bot() = default;
 
  private:
-    void OnGameStart() final;
+  void OnGameStart() final;
 
-    void OnGameEnd() final;
+  void OnGameEnd() final;
 
-    void OnStep() final;
+  void OnStep() final;
 
-    void OnBuildingConstructionComplete(const sc2::Unit* building_) final;
+  void OnBuildingConstructionComplete(const sc2::Unit* building_) final;
 
-    void OnUnitCreated(const sc2::Unit* unit_) final;
+  void OnUnitCreated(const sc2::Unit* unit_) final;
 
-    void OnUnitIdle(const sc2::Unit* unit_) final;
+  void OnUnitIdle(const sc2::Unit* unit_) final;
 
-    void OnUnitDestroyed(const sc2::Unit* unit_) final;
+  void OnUnitDestroyed(const sc2::Unit* unit_) final;
 
-    void OnUpgradeCompleted(sc2::UpgradeID id_) final;
+  void OnUpgradeCompleted(sc2::UpgradeID id_) final;
 
-    void OnError(const std::vector<sc2::ClientError>& client_errors,
-        const std::vector<std::string>& protocol_errors = {}) final;
+  void OnError(const std::vector<sc2::ClientError>& client_errors,
+               const std::vector<std::string>& protocol_errors = {}) final;
 
-	bool BuildDepot(bool toggle_);
+  void BuildDepot();
 
-	void BuildScv();
+  void BuildScv();
 
-	bool ToggleBuildDepot = false;
+  bool ToggleBuildDepot = false;
 };
