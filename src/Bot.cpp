@@ -102,9 +102,13 @@ void Bot::BuildDepot() {
         Observation()->GetUnits(sc2::Unit::Alliance::Self, sc2::IsWorker());
     // Observation()->GetUnit(workers[0]->tag); // redundant
     const sc2::Unit* gopher = workers[0];
-    // this will probably cause too much building
-    Actions()->UnitCommand(gopher, sc2::ABILITY_ID::BUILD_SUPPLYDEPOT);
+    // need position to build.
 
+    Actions()->UnitCommand(gopher, sc2::ABILITY_ID::BUILD_SUPPLYDEPOT,
+                           {gopher->pos.x, gopher->pos.y});
+
+    Debug()->DebugSphereOut(gopher->pos, 0.5, sc2::Colors::Yellow);
+    Debug()->SendDebug();
     for (const sc2::UnitOrder& order : gopher->orders)
       std::cout << "Order: " << sc2::AbilityTypeToName(order.ability_id)
                 << std::endl;
