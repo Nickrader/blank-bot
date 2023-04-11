@@ -5,6 +5,7 @@
 #pragma once
 
 #include <sc2api/sc2_agent.h>
+#include <sc2api/sc2_common.h>
 
 // The main bot class.
 struct Bot : sc2::Agent {
@@ -35,4 +36,6 @@ struct Bot : sc2::Agent {
   void BuildScv();
 
   bool ToggleBuildDepot = false;
+
+  const sc2::Point2D DepotPlacement();
 };

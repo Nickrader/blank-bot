@@ -8,6 +8,7 @@
 #include <sc2api/sc2_common.h>
 #include <sc2api/sc2_unit.h>
 #include <sc2api/sc2_unit_filters.h>
+#include <sc2lib/sc2_search.h>
 
 #include <iostream>
 
@@ -100,30 +101,27 @@ void Bot::BuildDepot() {
   if (food >= supply) {
     auto workers =
         Observation()->GetUnits(sc2::Unit::Alliance::Self, sc2::IsWorker());
-    // Observation()->GetUnit(workers[0]->tag); // redundant
+
     const sc2::Unit* gopher = workers[0];
-    // need position to build.
-    // point direction enemy
-    // offset Townhall loc by constant
 
-    // const sc2::Units cc_all =
-    //    Observation()->GetUnits(sc2::Unit::Alliance::Self, sc2::IsTownHall());
-    // const sc2::Unit* cc_main = cc_all[0];
     const sc2::Point2D start = Observation()->GetStartLocation();
-    sc2::Point2D mutalble_target = {start.x + 5, start.y + 5};
-    if (Query()->Placement(sc2::ABILITY_ID::BUILD_SUPPLYDEPOT,
-                           mutalble_target)) {
-      Actions()->UnitCommand(gopher, sc2::ABILITY_ID::BUILD_SUPPLYDEPOT,
-                             {gopher->pos.x, gopher->pos.y});
+    // sc2::Point2D mutalble_target = {start.x + 5, start.y + 5};
 
-      Debug()->DebugSphereOut(gopher->pos, 0.5, sc2::Colors::Yellow);
-      Debug()->SendDebug();
+    // if (Query()->Placement(sc2::ABILITY_ID::BUILD_SUPPLYDEPOT,
+    //                       mutalble_target)) {
 
-      for (const sc2::UnitOrder& order : gopher->orders)
-        std::cout << "Order: " << sc2::AbilityTypeToName(order.ability_id)
-                  << std::endl;
-    } else
-      std::cout << "Cannot Place: " << std::endl;
+    const sc2::Point2D target = DepotPlacement();
+
+    Actions()->UnitCommand(gopher, sc2::ABILITY_ID::BUILD_SUPPLYDEPOT, target);
+
+    Debug()->DebugSphereOut(gopher->pos, 0.5, sc2::Colors::Red);
+    Debug()->SendDebug();
+
+    for (const sc2::UnitOrder& order : gopher->orders)
+      std::cout << "Order: " << sc2::AbilityTypeToName(order.ability_id)
+                << std::endl;
+    //} else
+    //  std::cout << "Cannot Place: " << std::endl;
   }
 }
 
@@ -134,5 +132,16 @@ void Bot::BuildScv() {
     if (unit->orders.size() == 0) {
       Actions()->UnitCommand(unit, sc2::ABILITY_ID::TRAIN_SCV);
     }
+  }
+}
+
+// for now we cheat, and use an expansion location to test
+const sc2::Point2D Bot::DepotPlacement() {
+  auto expansions =
+      sc2::search::CalculateExpansionLocations(Observation(), Query());
+  for (auto expo : expansions) {
+    if (Query()->Placement(sc2::ABILITY_ID::BUILD_SUPPLYDEPOT,
+                           {expo.x, expo.y}))
+      return {expo.x, expo.y};
   }
 }
