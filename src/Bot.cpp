@@ -106,20 +106,24 @@ void Bot::BuildDepot() {
     // point direction enemy
     // offset Townhall loc by constant
 
-    const sc2::Units cc_all =
-        Observation()->GetUnits(sc2::Unit::Alliance::Self, sc2::IsTownHall());
-    const sc2::Unit* cc_main = cc_all[0];
+    // const sc2::Units cc_all =
+    //    Observation()->GetUnits(sc2::Unit::Alliance::Self, sc2::IsTownHall());
+    // const sc2::Unit* cc_main = cc_all[0];
+    const sc2::Point2D start = Observation()->GetStartLocation();
+    sc2::Point2D mutalble_target = {start.x + 5, start.y + 5};
+    if (Query()->Placement(sc2::ABILITY_ID::BUILD_SUPPLYDEPOT,
+                           mutalble_target)) {
+      Actions()->UnitCommand(gopher, sc2::ABILITY_ID::BUILD_SUPPLYDEPOT,
+                             {gopher->pos.x, gopher->pos.y});
 
+      Debug()->DebugSphereOut(gopher->pos, 0.5, sc2::Colors::Yellow);
+      Debug()->SendDebug();
 
-    Actions()->UnitCommand(gopher, sc2::ABILITY_ID::BUILD_SUPPLYDEPOT,
-                           {gopher->pos.x, gopher->pos.y});
-
-    Debug()->DebugSphereOut(gopher->pos, 0.5, sc2::Colors::Yellow);
-    Debug()->SendDebug();
-
-    for (const sc2::UnitOrder& order : gopher->orders)
-      std::cout << "Order: " << sc2::AbilityTypeToName(order.ability_id)
-                << std::endl;
+      for (const sc2::UnitOrder& order : gopher->orders)
+        std::cout << "Order: " << sc2::AbilityTypeToName(order.ability_id)
+                  << std::endl;
+    } else
+      std::cout << "Cannot Place: " << std::endl;
   }
 }
 
