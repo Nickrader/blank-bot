@@ -38,4 +38,6 @@ struct Bot : sc2::Agent {
   bool ToggleBuildDepot = false;
 
   const sc2::Point2D DepotPlacement();
+
+  std::vector<sc2::Point3D> expansions_;
 };
