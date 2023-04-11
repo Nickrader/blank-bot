@@ -103,12 +103,20 @@ void Bot::BuildDepot() {
     // Observation()->GetUnit(workers[0]->tag); // redundant
     const sc2::Unit* gopher = workers[0];
     // need position to build.
+    // point direction enemy
+    // offset Townhall loc by constant
+
+    const sc2::Units cc_all =
+        Observation()->GetUnits(sc2::Unit::Alliance::Self, sc2::IsTownHall());
+    const sc2::Unit* cc_main = cc_all[0];
+
 
     Actions()->UnitCommand(gopher, sc2::ABILITY_ID::BUILD_SUPPLYDEPOT,
                            {gopher->pos.x, gopher->pos.y});
 
     Debug()->DebugSphereOut(gopher->pos, 0.5, sc2::Colors::Yellow);
     Debug()->SendDebug();
+
     for (const sc2::UnitOrder& order : gopher->orders)
       std::cout << "Order: " << sc2::AbilityTypeToName(order.ability_id)
                 << std::endl;
