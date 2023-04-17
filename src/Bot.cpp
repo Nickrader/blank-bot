@@ -138,11 +138,18 @@ void Bot::BuildScv() {
 }
 
 // for now we cheat, and use an expansion location to test
-const sc2::Point2D Bot::DepotPlacement() {
+// sc2::search::CalculateQueries seems to have what we need,
+// can strip it down a bit and make use of logic.
+// should be able to find/issue buildable locations with what
+// we have in sc2_search.cc
 
+const sc2::Point2D Bot::DepotPlacement() {
+  sc2::Point2D target;
   for (auto& expo : expansions_) {
     if (Query()->Placement(sc2::ABILITY_ID::BUILD_SUPPLYDEPOT,
-                           {expo.x, expo.y}))
-      return {expo.x, expo.y};
+                           {expo.x, expo.y})) {
+      ;
+    }
   }
+  return target;
 }
