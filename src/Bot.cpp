@@ -114,6 +114,8 @@ void Bot::BuildDepot() {
 
     const sc2::Point2D target = DepotPlacement();
 
+    // Error: "Can't find placement location."
+    // Didn't see debug sphere, so assume bad target equals error.
     Actions()->UnitCommand(gopher, sc2::ABILITY_ID::BUILD_SUPPLYDEPOT, target);
 
     Debug()->DebugSphereOut(gopher->pos, 0.5, sc2::Colors::Red);
@@ -148,7 +150,8 @@ const sc2::Point2D Bot::DepotPlacement() {
   for (auto& expo : expansions_) {
     if (Query()->Placement(sc2::ABILITY_ID::BUILD_SUPPLYDEPOT,
                            {expo.x, expo.y})) {
-      ;
+      target = {expo.x, expo.y};
+			break;
     }
   }
   return target;
