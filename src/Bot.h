@@ -39,7 +39,7 @@ struct Bot : sc2::Agent {
 
   std::vector<sc2::Point3D> expansions_;
 
-  GameUiState UiState_;
+  UiState ui_state_;
 };
 
 // struct GameUiState {
@@ -49,9 +49,9 @@ struct Bot : sc2::Agent {
 //	int CCs_ = 1;  // Normal game always starts with one Townhall per player
 //};
 
-struct GameUiState {
-  GameUiState();
+struct UiState {
+	UiState() {};
 
-  bool building_depot_ = false;
-  bool building_cc_ = false;
-};
+  bool building_depot_;
+  bool building_cc_ ;
+} ;

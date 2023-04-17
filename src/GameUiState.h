@@ -1,8 +1,8 @@
 #pragma once
 #include <iostream>
 
-class GameUiState {
-	GameUiState() {}
+class UiState {
+	UiState() {}
 
 	EnemyStats enemy;
 

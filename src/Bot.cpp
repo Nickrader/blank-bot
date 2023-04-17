@@ -97,11 +97,11 @@ void Bot::OnError(const std::vector<sc2::ClientError>& client_errors,
 }
 
 void Bot::BuildDepot() {
-  if (!UiState_.building_depot_) {
+  if (!ui_state_.building_depot_) {
     auto food = Observation()->GetFoodUsed();
     auto supply = Observation()->GetFoodCap();
     if (food >= supply) {
-      UiState_.building_depot_ = true;
+      ui_state_.building_depot_ = true;
       auto workers =
           Observation()->GetUnits(sc2::Unit::Alliance::Self, sc2::IsWorker());
 
@@ -136,19 +136,20 @@ void Bot::BuildScv() {
 
 const sc2::Point2D Bot::DepotPlacement() {
   sc2::Point2D target;
-	// what am I sorting. x distance, y distance?  ... check utils.
-	// distance stuff was in Utils.
-	std::sort(expansions_)
+  // what am I sorting. x distance, y distance?
+  const sc2::Point2D& main = Observation()->GetGameInfo().start_locations[0];
+  std::sort(expansions_.begin(), expansions_.end());
   // logic to select target:
-	// 
+  //
   // Gather candidate locations {x,y}
   // locs in Main
   // locs not in mineral line
   // preferably closest to ramp
   // would need way to calc ramp?
   // closest place to main where elevation changes by 0.2???
-	// 
+  //
   // Sort locs by distance to Main CC
   //
+	target = expansions_[1];
   return target;
 }
