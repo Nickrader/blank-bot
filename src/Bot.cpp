@@ -96,7 +96,11 @@ void Bot::OnError(const std::vector<sc2::ClientError>& client_errors,
     std::cerr << "Encountered protocol error: " << i << std::endl;
 }
 
+// lacks logic to check if one has been assigned orders to build.
+// Ways to keep track?: Globals, State Class, BotClass variables, ...
+
 void Bot::BuildDepot() {
+	Observation()->GetGameInfo().
   // if supply is less than some number
   auto food = Observation()->GetFoodUsed();
   auto supply = Observation()->GetFoodCap();
@@ -107,15 +111,9 @@ void Bot::BuildDepot() {
     const sc2::Unit* gopher = workers[0];
 
     const sc2::Point2D start = Observation()->GetStartLocation();
-    // sc2::Point2D mutalble_target = {start.x + 5, start.y + 5};
-
-    // if (Query()->Placement(sc2::ABILITY_ID::BUILD_SUPPLYDEPOT,
-    //                       mutalble_target)) {
 
     const sc2::Point2D target = DepotPlacement();
 
-    // Error: "Can't find placement location."
-    // Didn't see debug sphere, so assume bad target equals error.
     Actions()->UnitCommand(gopher, sc2::ABILITY_ID::BUILD_SUPPLYDEPOT, target);
 
     Debug()->DebugSphereOut(gopher->pos, 0.5, sc2::Colors::Red);
@@ -148,6 +146,7 @@ void Bot::BuildScv() {
 const sc2::Point2D Bot::DepotPlacement() {
   sc2::Point2D target;
   for (auto& expo : expansions_) {
+		// Returns target based on place in array, not by distance to SCV, or Main.
     if (Query()->Placement(sc2::ABILITY_ID::BUILD_SUPPLYDEPOT,
                            {expo.x, expo.y})) {
       target = {expo.x, expo.y};
