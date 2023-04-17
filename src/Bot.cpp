@@ -100,8 +100,7 @@ void Bot::OnError(const std::vector<sc2::ClientError>& client_errors,
 // Ways to keep track?: Globals, State Class, BotClass variables, ...
 
 void Bot::BuildDepot() {
-	Observation()->GetGameInfo();
-  // if supply is less than some number
+
   auto food = Observation()->GetFoodUsed();
   auto supply = Observation()->GetFoodCap();
   if (food >= supply) {
@@ -122,8 +121,6 @@ void Bot::BuildDepot() {
     for (const sc2::UnitOrder& order : gopher->orders)
       std::cout << "Order: " << sc2::AbilityTypeToName(order.ability_id)
                 << std::endl;
-    //} else
-    //  std::cout << "Cannot Place: " << std::endl;
   }
 }
 
