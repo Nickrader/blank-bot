@@ -40,4 +40,14 @@ struct Bot : sc2::Agent {
   const sc2::Point2D DepotPlacement();
 
   std::vector<sc2::Point3D> expansions_;
+
+	GameUiState UiState_;
+
+};
+
+struct GameUiState {
+	GameUiState();
+	
+	int depots_ = 0;
+	int CCs_ = 1;
 };

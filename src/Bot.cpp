@@ -100,7 +100,7 @@ void Bot::OnError(const std::vector<sc2::ClientError>& client_errors,
 // Ways to keep track?: Globals, State Class, BotClass variables, ...
 
 void Bot::BuildDepot() {
-	Observation()->GetGameInfo().
+	Observation()->GetGameInfo();
   // if supply is less than some number
   auto food = Observation()->GetFoodUsed();
   auto supply = Observation()->GetFoodCap();
@@ -137,21 +137,17 @@ void Bot::BuildScv() {
   }
 }
 
-// for now we cheat, and use an expansion location to test
-// sc2::search::CalculateQueries seems to have what we need,
-// can strip it down a bit and make use of logic.
-// should be able to find/issue buildable locations with what
-// we have in sc2_search.cc
-
 const sc2::Point2D Bot::DepotPlacement() {
   sc2::Point2D target;
-  for (auto& expo : expansions_) {
-		// Returns target based on place in array, not by distance to SCV, or Main.
-    if (Query()->Placement(sc2::ABILITY_ID::BUILD_SUPPLYDEPOT,
-                           {expo.x, expo.y})) {
-      target = {expo.x, expo.y};
-			break;
-    }
-  }
+	// logic to select target:
+	// Gather candidate locations {x,y}
+			// locs in Main
+			// locs not in mineral line
+			// preferably closest to ramp
+					// would need way to calc ramp?
+							// closest place to main where elevation changes by 0.2???
+	// Sort locs by distance to Main CC
+	//
   return target;
 }
+
