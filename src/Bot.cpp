@@ -96,31 +96,31 @@ void Bot::OnError(const std::vector<sc2::ClientError>& client_errors,
     std::cerr << "Encountered protocol error: " << i << std::endl;
 }
 
-// lacks logic to check if one has been assigned orders to build.
-// Ways to keep track?: Globals, State Class, BotClass variables, ...
-
 void Bot::BuildDepot() {
+  if (!UiState_.building_depot_) {
+    auto food = Observation()->GetFoodUsed();
+    auto supply = Observation()->GetFoodCap();
+    if (food >= supply) {
+      UiState_.building_depot_ = true;
+      auto workers =
+          Observation()->GetUnits(sc2::Unit::Alliance::Self, sc2::IsWorker());
 
-  auto food = Observation()->GetFoodUsed();
-  auto supply = Observation()->GetFoodCap();
-  if (food >= supply) {
-    auto workers =
-        Observation()->GetUnits(sc2::Unit::Alliance::Self, sc2::IsWorker());
+      const sc2::Unit* gopher = workers[0];
 
-    const sc2::Unit* gopher = workers[0];
+      const sc2::Point2D start = Observation()->GetStartLocation();
 
-    const sc2::Point2D start = Observation()->GetStartLocation();
+      const sc2::Point2D target = DepotPlacement();
 
-    const sc2::Point2D target = DepotPlacement();
+      Actions()->UnitCommand(gopher, sc2::ABILITY_ID::BUILD_SUPPLYDEPOT,
+                             target);
 
-    Actions()->UnitCommand(gopher, sc2::ABILITY_ID::BUILD_SUPPLYDEPOT, target);
+      Debug()->DebugSphereOut(gopher->pos, 0.5, sc2::Colors::Red);
+      Debug()->SendDebug();
 
-    Debug()->DebugSphereOut(gopher->pos, 0.5, sc2::Colors::Red);
-    Debug()->SendDebug();
-
-    for (const sc2::UnitOrder& order : gopher->orders)
-      std::cout << "Order: " << sc2::AbilityTypeToName(order.ability_id)
-                << std::endl;
+      for (const sc2::UnitOrder& order : gopher->orders)
+        std::cout << "Order: " << sc2::AbilityTypeToName(order.ability_id)
+                  << std::endl;
+    }
   }
 }
 
@@ -136,15 +136,19 @@ void Bot::BuildScv() {
 
 const sc2::Point2D Bot::DepotPlacement() {
   sc2::Point2D target;
-	// logic to select target:
-	// Gather candidate locations {x,y}
-			// locs in Main
-			// locs not in mineral line
-			// preferably closest to ramp
-					// would need way to calc ramp?
-							// closest place to main where elevation changes by 0.2???
-	// Sort locs by distance to Main CC
-	//
+	// what am I sorting. x distance, y distance?  ... check utils.
+	// distance stuff was in Utils.
+	std::sort(expansions_)
+  // logic to select target:
+	// 
+  // Gather candidate locations {x,y}
+  // locs in Main
+  // locs not in mineral line
+  // preferably closest to ramp
+  // would need way to calc ramp?
+  // closest place to main where elevation changes by 0.2???
+	// 
+  // Sort locs by distance to Main CC
+  //
   return target;
 }
-
