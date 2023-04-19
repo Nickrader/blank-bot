@@ -149,8 +149,9 @@ const sc2::Point2D Bot::DepotPlacement() {
   //      float distb = sc2::DistanceSquared2D(main, b);
   //      return dista > distb;
   //    });
+
   std::sort(expansions_.begin(), expansions_.end(),
-            [](int a, int b) { return a > b; });
+            [](sc2::Point3D a, sc2::Point3D b) { return a > b; });
   for (auto& a : expansions_) std::cout << a.x << a.y << a.z << std::endl;
   //
   // logic to select target:
