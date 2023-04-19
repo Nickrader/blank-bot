@@ -42,4 +42,6 @@ struct Bot : sc2::Agent {
   std::vector<sc2::Point3D> expansions_;
 
   aaa::GameUiState ui_state_;
+
+	sc2::Point3D main_;
 };

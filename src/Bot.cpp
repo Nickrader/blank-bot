@@ -23,6 +23,9 @@ void Bot::OnGameStart() {
   Bot::expansions_ =
       sc2::search::CalculateExpansionLocations(Observation(), Query());
 
+  auto aa = Observation()->GetUnits(sc2::IsTownHall());
+  Bot::main_ = aa[0]->pos;
+
   std::cout << "New game started!" << std::endl;
 }
 
@@ -143,30 +146,33 @@ void Bot::BuildScv() {
 const sc2::Point2D Bot::DepotPlacement() {
   sc2::Point2D target;
 
-  const sc2::Point2D& main = Observation()->GetGameInfo().start_locations[1];
-
   // We've proven sort with DistanceSqaured, now need to do this with 'valid'
   // locations in main.
   std::sort(expansions_.begin(), expansions_.end(),
-            [main](sc2::Point3D a, sc2::Point3D b) {
-              float dista = sc2::DistanceSquared2D(main, a);
-              float distb = sc2::DistanceSquared2D(main, b);
+            [this](sc2::Point3D a, sc2::Point3D b) {
+              float dista = sc2::DistanceSquared2D(main_, a);
+              float distb = sc2::DistanceSquared2D(main_, b);
               return dista < distb;
             });
 
   for (auto& a : expansions_) {
-    float dist = sc2::DistanceSquared2D(main, a);
+    float dist = sc2::DistanceSquared2D(main_, a);
     std::cout << a.x << '\t' << a.y << '\t' << a.z << '\t' << dist << std::endl;
   }
+
   // Gather candidate locations {x,y}
   // locs in Main
+  //
+  //// This could be done several ways.
+  ////  1: pathing from main to other expo, take where path drops in z axis.
+  /// give us ramp /  2: radiate out from main check z, /  ??? do all these
+  /// create borders?  Is some heuristic radius distance that main generally
+  /// encompasses.???
 
+  // CONSTRAINTS::
   // locs not in mineral line
   // preferably closest to ramp
-  // would need way to calc ramp?
-  // closest place to main where elevation changes by 0.2???
 
-  // just quick test, should extend MyClass ???
   ++ui_state_.depot_counter_;
   target = expansions_[ui_state_.depot_counter_];
   return target;
