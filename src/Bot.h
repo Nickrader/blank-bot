@@ -6,7 +6,8 @@
 
 #include <sc2api/sc2_agent.h>
 #include <sc2api/sc2_common.h>
-//#include "GameUiState.h"
+
+#include "GameUiState.h"
 
 // The main bot class.
 struct Bot : sc2::Agent {
@@ -40,5 +41,5 @@ struct Bot : sc2::Agent {
 
   std::vector<sc2::Point3D> expansions_;
 
-  //aaa::UiState ui_state_;
+  //aaa::GameUiState ui_state_;
 };

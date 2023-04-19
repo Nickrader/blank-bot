@@ -12,6 +12,8 @@
 
 #include <iostream>
 
+#include "GameUiState.h"
+
 // Things I normally do OnGameXyzabc
 // May not translate to code atm
 
@@ -137,7 +139,7 @@ const sc2::Point2D Bot::DepotPlacement() {
   sc2::Point2D target;
   // what am I sorting. x distance, y distance?
   const sc2::Point2D& main = Observation()->GetGameInfo().start_locations[0];
-  std::sort(expansions_.begin(), expansions_.end());
+  //std::sort(expansions_.begin(), expansions_.end());
   // logic to select target:
   //
   // Gather candidate locations {x,y}
