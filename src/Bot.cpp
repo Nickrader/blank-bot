@@ -53,7 +53,7 @@ void Bot::OnStep() {
   BuildDepot();
 
   int loop = Observation()->GetGameLoop();
-  std::cout << "OnStep: " << loop << std::endl;
+  if (loop % 100 == 0) std::cout << "OnStep: " << loop << std::endl;
 }
 
 void Bot::OnUnitCreated(const sc2::Unit* unit_) {
@@ -102,7 +102,8 @@ void Bot::BuildDepot() {
   if (!ui_state_.building_depot_) {
     auto food = Observation()->GetFoodUsed();
     auto supply = Observation()->GetFoodCap();
-    if (food >= supply) {
+    auto mineralz = Observation()->GetMinerals();
+    if (food >= supply && mineralz >= 100) {
       ui_state_.building_depot_ = true;
       auto workers =
           Observation()->GetUnits(sc2::Unit::Alliance::Self, sc2::IsWorker());
@@ -140,8 +141,18 @@ const sc2::Point2D Bot::DepotPlacement() {
   sc2::Point2D target;
   // what am I sorting. x distance, y distance?
   const sc2::Point2D& main = Observation()->GetGameInfo().start_locations[0];
-   std::sort(expansions_.begin()->, expansions_.end());
-	// 
+
+  auto& aaa = *expansions_.begin();  // iterators...
+  // std::sort(expansions_.begin()), expansions_.end(),
+  //    [main](sc2::Point3D a, sc2::Point3D b) {
+  //      float dista = sc2::DistanceSquared2D(main, a);
+  //      float distb = sc2::DistanceSquared2D(main, b);
+  //      return dista > distb;
+  //    });
+  std::sort(expansions_.begin(), expansions_.end(),
+            [](int a, int b) { return a > b; });
+  for (auto& a : expansions_) std::cout << a.x << a.y << a.z << std::endl;
+  //
   // logic to select target:
   //
   // Gather candidate locations {x,y}
