@@ -99,30 +99,31 @@ void Bot::OnError(const std::vector<sc2::ClientError>& client_errors,
 }
 
 void Bot::BuildDepot() {
-  // if (!ui_state_.building_depot_) {
-  auto food = Observation()->GetFoodUsed();
-  auto supply = Observation()->GetFoodCap();
-  if (food >= supply) {
-    // ui_state_.building_depot_ = true;
-    auto workers =
-        Observation()->GetUnits(sc2::Unit::Alliance::Self, sc2::IsWorker());
+  if (!ui_state_.building_depot_) {
+    auto food = Observation()->GetFoodUsed();
+    auto supply = Observation()->GetFoodCap();
+    if (food >= supply) {
+      ui_state_.building_depot_ = true;
+      auto workers =
+          Observation()->GetUnits(sc2::Unit::Alliance::Self, sc2::IsWorker());
 
-    const sc2::Unit* gopher = workers[0];
+      const sc2::Unit* gopher = workers[0];
 
-    const sc2::Point2D start = Observation()->GetStartLocation();
+      const sc2::Point2D start = Observation()->GetStartLocation();
 
-    const sc2::Point2D target = DepotPlacement();
+      const sc2::Point2D target = DepotPlacement();
 
-    Actions()->UnitCommand(gopher, sc2::ABILITY_ID::BUILD_SUPPLYDEPOT, target);
+      Actions()->UnitCommand(gopher, sc2::ABILITY_ID::BUILD_SUPPLYDEPOT,
+                             target);
 
-    Debug()->DebugSphereOut(gopher->pos, 0.5, sc2::Colors::Red);
-    Debug()->SendDebug();
+      Debug()->DebugSphereOut(gopher->pos, 0.5, sc2::Colors::Red);
+      Debug()->SendDebug();
 
-    for (const sc2::UnitOrder& order : gopher->orders)
-      std::cout << "Order: " << sc2::AbilityTypeToName(order.ability_id)
-                << std::endl;
+      for (const sc2::UnitOrder& order : gopher->orders)
+        std::cout << "Order: " << sc2::AbilityTypeToName(order.ability_id)
+                  << std::endl;
+    }
   }
-  //}
 }
 
 void Bot::BuildScv() {
@@ -139,7 +140,7 @@ const sc2::Point2D Bot::DepotPlacement() {
   sc2::Point2D target;
   // what am I sorting. x distance, y distance?
   const sc2::Point2D& main = Observation()->GetGameInfo().start_locations[0];
-  //std::sort(expansions_.begin(), expansions_.end());
+  // std::sort(expansions_.begin(), expansions_.end());
   // logic to select target:
   //
   // Gather candidate locations {x,y}
