@@ -1,21 +1,18 @@
 #pragma once
 #include <iostream>
 
-class UiState {
-	UiState() {}
-
-	EnemyStats enemy;
-
-};
-
-class EnemyStats {
-// buildings econ
-
-	
-// buildings military
-// workers counted
-};
-
-// I should have access to my stats through API,
-// not sure if benefit from sumarry class for my units.
-
+//namespace aaa {
+////class UiState {
+//// public:
+////  UiState() : building_depot_(true), building_cc_(false){};
+////
+////  bool building_depot_;
+////  bool building_cc_;
+////};
+//
+//	class UiState {
+//		int a;
+//		int b;
+//	};
+//
+//}  // namespace aaa

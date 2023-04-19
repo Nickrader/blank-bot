@@ -6,14 +6,7 @@
 
 #include <sc2api/sc2_agent.h>
 #include <sc2api/sc2_common.h>
-
-// struct UiState {
-//	UiState() {};
-//
-//	bool building_depot_ = false;
-//	bool building_cc_ = false;
-//};
-struct UiState;
+//#include "GameUiState.h"
 
 // The main bot class.
 struct Bot : sc2::Agent {
@@ -47,12 +40,5 @@ struct Bot : sc2::Agent {
 
   std::vector<sc2::Point3D> expansions_;
 
-  UiState ui_state_;
+  //aaa::UiState ui_state_;
 };
-
-// struct UiState {
-//	UiState() {};
-//
-//	bool building_depot_ = false;
-//	bool building_cc_ = false;
-//};
