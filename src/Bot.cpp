@@ -142,7 +142,8 @@ void Bot::BuildScv() {
 
 const sc2::Point2D Bot::DepotPlacement() {
   sc2::Point2D target;
-  const sc2::Point2D& main = Observation()->GetGameInfo().start_locations[0];
+
+  const sc2::Point2D& main = Observation()->GetGameInfo().start_locations[1];
 
   // We've proven sort with DistanceSqaured, now need to do this with 'valid'
   // locations in main.
