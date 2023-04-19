@@ -102,12 +102,12 @@ void Bot::BuildDepot() {
   if (!ui_state_.building_depot_) {
     auto food = Observation()->GetFoodUsed();
     auto supply = Observation()->GetFoodCap();
-    if (food >= supply-1) {
+    if (food >= supply) {
       ui_state_.building_depot_ = true;
       auto workers =
           Observation()->GetUnits(sc2::Unit::Alliance::Self, sc2::IsWorker());
 
-      const sc2::Unit* gopher = workers[0];
+      const sc2::Unit* gopher = workers[1];
 
       const sc2::Point2D start = Observation()->GetStartLocation();
 
@@ -140,7 +140,8 @@ const sc2::Point2D Bot::DepotPlacement() {
   sc2::Point2D target;
   // what am I sorting. x distance, y distance?
   const sc2::Point2D& main = Observation()->GetGameInfo().start_locations[0];
-  // std::sort(expansions_.begin(), expansions_.end());
+   std::sort(expansions_.begin()->, expansions_.end());
+	// 
   // logic to select target:
   //
   // Gather candidate locations {x,y}
