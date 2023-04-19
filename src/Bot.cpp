@@ -142,16 +142,18 @@ const sc2::Point2D Bot::DepotPlacement() {
   // what am I sorting. x distance, y distance?
   const sc2::Point2D& main = Observation()->GetGameInfo().start_locations[0];
 
-  auto& aaa = *expansions_.begin();  // iterators...
-  // std::sort(expansions_.begin()), expansions_.end(),
-  //    [main](sc2::Point3D a, sc2::Point3D b) {
-  //      float dista = sc2::DistanceSquared2D(main, a);
-  //      float distb = sc2::DistanceSquared2D(main, b);
-  //      return dista > distb;
-  //    });
+  //auto& aaa = *expansions_.begin();  // iterators...
+	
+   std::sort(expansions_.begin(), expansions_.end(),
+      [main](sc2::Point3D a, sc2::Point3D b) {
+        float dista = sc2::DistanceSquared2D(main, a);
+        float distb = sc2::DistanceSquared2D(main, b);
+        return dista > distb;
+      });
 
-  std::sort(expansions_.begin(), expansions_.end(),
-            [](sc2::Point3D a, sc2::Point3D b) { return a.x > b.x; });
+  //std::sort(expansions_.begin(), expansions_.end(),
+  //          [main](sc2::Point3D a, sc2::Point3D b) { return a.x > b.x; });
+
   for (auto& a : expansions_) std::cout << a.x << a.y << a.z << std::endl;
   //
   // logic to select target:
