@@ -139,34 +139,30 @@ void Bot::BuildScv() {
 
 const sc2::Point2D Bot::DepotPlacement() {
   sc2::Point2D target;
-  // what am I sorting. x distance, y distance?
   const sc2::Point2D& main = Observation()->GetGameInfo().start_locations[0];
 
-  //auto& aaa = *expansions_.begin();  // iterators...
-	
-   std::sort(expansions_.begin(), expansions_.end(),
-      [main](sc2::Point3D a, sc2::Point3D b) {
-        float dista = sc2::DistanceSquared2D(main, a);
-        float distb = sc2::DistanceSquared2D(main, b);
-        return dista > distb;
-      });
+  std::sort(expansions_.begin(), expansions_.end(),
+            [main](sc2::Point3D a, sc2::Point3D b) {
+              float dista = sc2::DistanceSquared2D(main, a);
+              float distb = sc2::DistanceSquared2D(main, b);
+              return dista > distb;
+            });
 
-  //std::sort(expansions_.begin(), expansions_.end(),
-  //          [main](sc2::Point3D a, sc2::Point3D b) { return a.x > b.x; });
+  for (auto& a : expansions_)
+    std::cout << a.x << '\t' << a.y << '\t' << a.z << std::endl;
 
-  for (auto& a : expansions_) std::cout << a.x << a.y << a.z << std::endl;
-  //
   // logic to select target:
   //
   // Gather candidate locations {x,y}
   // locs in Main
+	
+	
+
   // locs not in mineral line
   // preferably closest to ramp
   // would need way to calc ramp?
   // closest place to main where elevation changes by 0.2???
-  //
-  // Sort locs by distance to Main CC
-  //
+
   target = expansions_[1];
   return target;
 }
