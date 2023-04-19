@@ -143,20 +143,20 @@ void Bot::BuildScv() {
 const sc2::Point2D Bot::DepotPlacement() {
   sc2::Point2D target;
   const sc2::Point2D& main = Observation()->GetGameInfo().start_locations[0];
-  //------------------------------------------------------------
-  //// We've proven sort with DistanceSqaured, now need to do this with 'valid'
-  //// locations in main.
-  // std::sort(expansions_.begin(), expansions_.end(),
-  //          [main](sc2::Point3D a, sc2::Point3D b) {
-  //            float dista = sc2::DistanceSquared2D(main, a);
-  //            float distb = sc2::DistanceSquared2D(main, b);
-  //            return dista > distb;
-  //          });
-  //------------------------------------------------------------
 
-  // for (auto& a : expansions_)
-  //  std::cout << a.x << '\t' << a.y << '\t' << a.z << std::endl;
+  // We've proven sort with DistanceSqaured, now need to do this with 'valid'
+  // locations in main.
+  std::sort(expansions_.begin(), expansions_.end(),
+            [main](sc2::Point3D a, sc2::Point3D b) {
+              float dista = sc2::DistanceSquared2D(main, a);
+              float distb = sc2::DistanceSquared2D(main, b);
+              return dista < distb;
+            });
 
+  for (auto& a : expansions_) {
+    float dist = sc2::DistanceSquared2D(main, a);
+    std::cout << a.x << '\t' << a.y << '\t' << a.z << '\t' << dist << std::endl;
+  }
   // Gather candidate locations {x,y}
   // locs in Main
 
@@ -165,6 +165,8 @@ const sc2::Point2D Bot::DepotPlacement() {
   // would need way to calc ramp?
   // closest place to main where elevation changes by 0.2???
 
-  target = expansions_[1];
+  // just quick test, should extend MyClass ???
+  ++ui_state_.depot_counter_;
+  target = expansions_[ui_state_.depot_counter_];
   return target;
 }
