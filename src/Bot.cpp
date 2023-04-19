@@ -102,7 +102,7 @@ void Bot::BuildDepot() {
   if (!ui_state_.building_depot_) {
     auto food = Observation()->GetFoodUsed();
     auto supply = Observation()->GetFoodCap();
-    if (food >= supply) {
+    if (food >= supply-1) {
       ui_state_.building_depot_ = true;
       auto workers =
           Observation()->GetUnits(sc2::Unit::Alliance::Self, sc2::IsWorker());
