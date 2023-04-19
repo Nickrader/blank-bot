@@ -7,6 +7,14 @@
 #include <sc2api/sc2_agent.h>
 #include <sc2api/sc2_common.h>
 
+// struct UiState {
+//	UiState() {};
+//
+//	bool building_depot_ = false;
+//	bool building_cc_ = false;
+//};
+struct UiState;
+
 // The main bot class.
 struct Bot : sc2::Agent {
   Bot() = default;
@@ -42,16 +50,9 @@ struct Bot : sc2::Agent {
   UiState ui_state_;
 };
 
-// struct GameUiState {
-//	GameUiState();
+// struct UiState {
+//	UiState() {};
 //
-//	int depots_ = 0;
-//	int CCs_ = 1;  // Normal game always starts with one Townhall per player
+//	bool building_depot_ = false;
+//	bool building_cc_ = false;
 //};
-
-struct UiState {
-	UiState() {};
-
-  bool building_depot_;
-  bool building_cc_ ;
-} ;

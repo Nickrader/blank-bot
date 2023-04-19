@@ -150,6 +150,13 @@ const sc2::Point2D Bot::DepotPlacement() {
   //
   // Sort locs by distance to Main CC
   //
-	target = expansions_[1];
+  target = expansions_[1];
   return target;
 }
+
+struct UiState {
+  UiState() : building_depot_(false), building_cc_(false){};
+
+  bool building_depot_;
+  bool building_cc_;
+};
