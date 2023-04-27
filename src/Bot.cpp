@@ -60,6 +60,10 @@ void Bot::OnStep() {
 
   int loop = Observation()->GetGameLoop();
   if (loop % 100 == 0) std::cout << "OnStep: " << loop << std::endl;
+
+  sc2::ImageData& aba = sc2::GameInfo().pathing_grid;
+  sc2::ImageData& height_grid = sc2::GameInfo().terrain_height;
+  std::cout << "ImageData string: " << height_grid.data;
 }
 
 void Bot::OnUnitCreated(const sc2::Unit* unit_) {
@@ -146,8 +150,6 @@ void Bot::BuildScv() {
 const sc2::Point2D Bot::DepotPlacement() {
   sc2::Point2D target;
 
-  // We've proven sort with DistanceSqaured, now need to do this with 'valid'
-  // locations in main.
   std::sort(expansions_.begin(), expansions_.end(),
             [this](sc2::Point3D a, sc2::Point3D b) {
               float dista = sc2::DistanceSquared2D(main_, a);
@@ -155,20 +157,28 @@ const sc2::Point2D Bot::DepotPlacement() {
               return dista < distb;
             });
 
+  std::cout << "\nSorted Expansions: \n";
   for (auto& a : expansions_) {
     float dist = sc2::DistanceSquared2D(main_, a);
     std::cout << a.x << '\t' << a.y << '\t' << a.z << '\t' << dist << std::endl;
   }
 
-  // Gather candidate locations {x,y}
-  // locs in Main
-  //
-  //// This could be done several ways.
-  ////  1: pathing from main to other expo, take where path drops in z axis.
-  /// give us ramp /  2: radiate out from main check z, /  ??? do all these
+  ////  1: pathing from main to other expo,
+  // take where path drops in z axis.
+  /// give us ramp /
+  // ramp may not be only place where drop occurs (even at 0.2),
+  // ramp may not be indicator for radius.
+
+  // ramp could be desired location of first depot, to make choke/wall.
+  // Do I still want to find ramp???
+
+  // 2: radiate out from main check z, /  ??? do all these
   /// create borders?  Is some heuristic radius distance that main generally
   /// encompasses.???
 
+  // Gather candidate locations {x,y}
+  // locs in Main
+  //
   // CONSTRAINTS::
   // locs not in mineral line
   // preferably closest to ramp
