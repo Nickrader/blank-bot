@@ -63,7 +63,8 @@ void Bot::OnStep() {
   int loop = Observation()->GetGameLoop();
   if (loop % 100 == 0) std::cout << "OnStep: " << loop << std::endl;
 
-  auto aa = sc2::HeightMap();
+  auto aa = sc2::HeightMap(game_info_);
+	aa.Dump("Dump_height_map.txt");
 }
 
 void Bot::OnUnitCreated(const sc2::Unit* unit_) {

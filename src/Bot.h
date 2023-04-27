@@ -6,6 +6,7 @@
 
 #include <sc2api/sc2_agent.h>
 #include <sc2api/sc2_common.h>
+#include <sc2api/sc2_map_info.h>
 
 #include "GameUiState.h"
 
@@ -43,7 +44,7 @@ struct Bot : sc2::Agent {
 
   aaa::GameUiState ui_state_;
 
-	sc2::Point3D main_;
+  sc2::Point3D main_;
 
-	sc2::GameInfo game_info_;
+  sc2::GameInfo game_info_;
 };
