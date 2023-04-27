@@ -6,6 +6,7 @@
 
 #include <sc2api/sc2_api.h>
 #include <sc2api/sc2_common.h>
+#include <sc2api/sc2_map_info.h>
 #include <sc2api/sc2_unit.h>
 #include <sc2api/sc2_unit_filters.h>
 #include <sc2lib/sc2_search.h>
@@ -27,6 +28,8 @@ void Bot::OnGameStart() {
   Bot::main_ = aa[0]->pos;
 
   Bot::game_info_ = Observation()->GetGameInfo();
+
+
 
   std::cout << "New game started!" << std::endl;
 }
@@ -62,9 +65,9 @@ void Bot::OnStep() {
 
   int loop = Observation()->GetGameLoop();
   if (loop % 100 == 0) std::cout << "OnStep: " << loop << std::endl;
-
-  auto aa = sc2::HeightMap(game_info_);
-	aa.Dump("Dump_height_map.txt");
+	// dump height map into /build/Dump_height_map.txt
+	//auto aa = sc2::HeightMap(game_info_);
+	//aa.Dump("Dump_height_map.txt");
 }
 
 void Bot::OnUnitCreated(const sc2::Unit* unit_) {
