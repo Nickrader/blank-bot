@@ -44,4 +44,6 @@ struct Bot : sc2::Agent {
   aaa::GameUiState ui_state_;
 
 	sc2::Point3D main_;
+
+	sc2::GameInfo game_info_;
 };

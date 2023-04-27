@@ -26,6 +26,8 @@ void Bot::OnGameStart() {
   auto aa = Observation()->GetUnits(sc2::IsTownHall());
   Bot::main_ = aa[0]->pos;
 
+  Bot::game_info_ = Observation()->GetGameInfo();
+
   std::cout << "New game started!" << std::endl;
 }
 
@@ -61,9 +63,7 @@ void Bot::OnStep() {
   int loop = Observation()->GetGameLoop();
   if (loop % 100 == 0) std::cout << "OnStep: " << loop << std::endl;
 
-  sc2::ImageData& aba = sc2::GameInfo().pathing_grid;
-  sc2::ImageData& height_grid = sc2::GameInfo().terrain_height;
-  std::cout << "ImageData string: " << height_grid.data;
+  auto aa = sc2::HeightMap();
 }
 
 void Bot::OnUnitCreated(const sc2::Unit* unit_) {
