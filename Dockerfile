@@ -8,17 +8,15 @@ FROM debian:bullseye-slim
 # Environment Variables
 SHELL ["/bin/bash", "-c"]
 
-# Installs
-RUN mkdir /home/bot
-WORKDIR /home/bot
-
+# Update OS and Tools
 RUN apt-get update -y && apt-get upgrade -y && apt-get autoremove -y
 RUN apt-get install -y cmake
 RUN apt-get install -y build-essential
 RUN apt-get install -y git
 
-# Download and Build Project
-RUN git clone https://github.com/Nickrader/blank-bot.git
-WORKDIR /home/bot/blank-bot 
+RUN mkdir /home/BlankBot
+WORKDIR /home/BlankBot
+ADD * /home/BlankBot
+
 RUN cmake -B build -DBUILD_FOR_LADDER=ON -DSC2_VERSION=4.10.0
-RUN cmake --build build -j $(nproc)
+#RUN cmake --build build -j $(nproc)
