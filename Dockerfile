@@ -16,7 +16,9 @@ RUN apt-get install -y git
 
 RUN mkdir /home/BlankBot
 WORKDIR /home/BlankBot
-ADD * /home/BlankBot
+COPY $PWD /home/BlankBot/
+RUN mkdir $WORKDIR/build_for_ladder
 
-RUN cmake -B build -DBUILD_FOR_LADDER=ON -DSC2_VERSION=4.10.0
-#RUN cmake --build build -j $(nproc)
+RUN cmake -B build/build_for_ladder -DBUILD_FOR_LADDER=ON -DSC2_VERSION=4.10.0
+RUN cmake --build build/build_for_ladder -j $(nproc)
+

@@ -2,7 +2,7 @@
 
 docker build -t mylittlepony/buildforladder . 
 docker run --name=BlankBot mylittlepony/buildforladder
-docker cp BlankBot:/home/bot/blank-bot/build/bin/BlankBot $PWD/blank_bot
+docker cp BlankBot:/home/BlankBot/build/build_for_ladder/bin/BlankBot $PWD/blank_bot
 docker rm -f BlankBot
 docker rmi -f mylittlepony/buildforladder
 

@@ -60,6 +60,7 @@ int main(int argc, char* argv[])
     Options options;
     ParseArguments(argc, argv, &options);
 
+    std::cout << "This is a test.  This is only a test." << std::endl;
     sc2::Coordinator coordinator;
     Bot bot;
 
